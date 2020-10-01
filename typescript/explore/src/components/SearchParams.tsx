@@ -1,15 +1,22 @@
-import React, { useState, useEffect } from "react";
-import { ANIMALS } from "@frontendmasters/pet";
+import React, { useState, useEffect, FunctionComponent } from "react";
+import pet, { ANIMALS } from "@frontendmasters/pet";
 import useDropdown from "../hooks/useDropdown";
 
-const SearchParams = () => {
+const SearchParams: FunctionComponent= () => {
   const [location, setLocation] = useState("Seattle, WA");
-  // eslint-disable-next-line
-  const [breeds, setBreeds] = useState([]);
-  // eslint-disable-next-line
+  const [breeds, setBreeds] = useState([] as string[]);
   const [animal, AnimalDropdown] = useDropdown("Animal", "dog", ANIMALS);
-  // eslint-disable-next-line
-  const [breed, BreedDropdown] = useDropdown("Breed", "", breeds);
+  const [breed, BreedDropdown, setBreed] = useDropdown("Breed", "", breeds);
+
+  useEffect(() => {
+    setBreeds([]);
+    setBreed("");
+
+    pet.breeds(animal).then(({ breeds }) => {
+      const breedStrings = breeds.map(({ name }) => name);
+      setBreeds(breedStrings);
+    }, console.error)
+  }, [animal])
 
   return (
     <div className="search-params">

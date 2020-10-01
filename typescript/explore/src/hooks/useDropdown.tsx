@@ -32,7 +32,7 @@ const useDropDown = (
   return [state, Dropdown, setState] as [
     string,
     FunctionComponent,
-    SetStateAction<string>
+    SetStateAction<any>
   ];
 };
 
