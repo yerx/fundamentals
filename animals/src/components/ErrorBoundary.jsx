@@ -18,7 +18,7 @@ export default class ErrorBoundary extends Component {
   componentDidCatch(error, info) {
     console.error("ErrorBoundary caught an error", error, info);
   }
-  // use componentDidUpdate so when there is a change to the state redirect to the home page
+  // use componentDidUpdate so when there is a change to the state or prop redirect to the home page
   componentDidUpdate() {
     if (this.state.hasError) {
       // redirect to home page after 5000 ms
