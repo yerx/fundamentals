@@ -8,7 +8,7 @@ class Details extends React.Component {
 
   componentDidMount() {
     // adding an error to test Error Boundary component
-    throw new Error("lol");
+    // throw new Error("lol");
     // eslint-disable-next-line
     pet.animal(this.props.id).then(({ animal }) => {
       this.setState({
