@@ -6,7 +6,7 @@ import Details from "./components/Details";
 import ThemeContext from "./components/ThemeContext";
 
 const App = () => {
-  const themeHook = useState("darkblue");
+  const themeHook = useState("peru");
   return (
     <React.StrictMode>
       {/* wrap the elements in the ThemeContext component and use .Provider to make the theme globally available to all components */}

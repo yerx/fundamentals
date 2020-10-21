@@ -2,6 +2,7 @@ import React from "react";
 import pet from "@frontendmasters/pet";
 import Carousel from "./Carousel";
 import ErrorBoundary from "./ErrorBoundary";
+import ThemeContext from "./ThemeContext";
 
 class Details extends React.Component {
   state = { loading: true };
@@ -37,7 +38,14 @@ class Details extends React.Component {
         <div>
           <h1>{name}</h1>
           <h2>{`${animal} - ${breed} - ${location}`} </h2>
-          <button>Adopt {name}</button>
+          <ThemeContext.Consumer>
+            {/* to use Context inside of a class use .Consumer and wrap it inside a function */}
+            {([theme]) => (
+              // use destructuring to pull the theme out of the themeHook array
+              // alt. would be (themeHook) => { <button style={{backgroundColor: themeHook[0]}}} at 0 index to grab the first item which is theme, which is the state
+              <button style={{ backgroundColor: theme }}>Adopt {name}</button>
+            )}
+          </ThemeContext.Consumer>
           <p>{description}</p>
         </div>
       </div>
