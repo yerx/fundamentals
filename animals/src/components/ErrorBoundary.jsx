@@ -6,10 +6,11 @@
  */
 
 import React, { Component } from "react";
-import { Link } from "@reach/router";
+import { Link, Redirect } from "@reach/router";
 
 export default class ErrorBoundary extends Component {
-  state = { hasError: false };
+  // add redirect property to state
+  state = { hasError: false, redirect: false };
   static getDerivedStateFromError() {
     return { hasError: true };
   }
@@ -17,7 +18,18 @@ export default class ErrorBoundary extends Component {
   componentDidCatch(error, info) {
     console.error("ErrorBoundary caught an error", error, info);
   }
+  // use componentDidUpdate so when there is a change to the state redirect to the home page
+  componentDidUpdate() {
+    if (this.state.hasError) {
+      // redirect to home page after 5000 ms
+      setTimeout(() => this.setState({ redirect: true }));
+    }
+  }
   render() {
+    // add the redirect conditional to use reach/router to redirect to home page
+    if (this.state.redirect) {
+      return <Redirect to="/" />;
+    }
     if (this.state.hasError) {
       return (
         <h1>
