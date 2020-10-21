@@ -3,16 +3,16 @@ import pet from "@frontendmasters/pet";
 import Carousel from "./Carousel";
 import ErrorBoundary from "./ErrorBoundary";
 import ThemeContext from "./ThemeContext";
+import { navigate } from "@reach/router";
+import Modal from "./Modal";
 
 class Details extends React.Component {
-  state = { loading: true };
+  state = { loading: true, showModal: false };
 
   componentDidMount() {
-    // adding an error to test Error Boundary component
-    // throw new Error("lol");
-    // eslint-disable-next-line
     pet.animal(this.props.id).then(({ animal }) => {
       this.setState({
+        url: animal.url,
         name: animal.name,
         animal: animal.type,
         location: `${animal.contact.address.city}, ${animal.contact.address.state}`,
@@ -24,13 +24,26 @@ class Details extends React.Component {
     }, console.error);
   }
 
+  // make the state the opposite of what the state was
+  toggleModal = () => this.setState({ showModal: !this.state.showModal });
+  // add function to navigate to the state url
+  adopt = () => navigate(this.state.url);
+
   render() {
     if (this.state.loading) {
       return <h1>loading...</h1>;
     }
 
-    // grab media from this.state
-    const { animal, breed, location, description, name, media } = this.state;
+    const {
+      animal,
+      breed,
+      location,
+      description,
+      name,
+      media,
+      // add showModal to state
+      showModal,
+    } = this.state;
 
     return (
       <div className="details">
@@ -43,10 +56,27 @@ class Details extends React.Component {
             {([theme]) => (
               // use destructuring to pull the theme out of the themeHook array
               // alt. would be (themeHook) => { <button style={{backgroundColor: themeHook[0]}}} at 0 index to grab the first item which is theme, which is the state
-              <button style={{ backgroundColor: theme }}>Adopt {name}</button>
+              <button
+                onClick={this.toggleModal}
+                style={{ backgroundColor: theme }}
+              >
+                Adopt {name}
+              </button>
             )}
           </ThemeContext.Consumer>
           <p>{description}</p>
+          {/* add ternary to show or not show modal */}
+          {showModal ? (
+            <Modal>
+              <div>
+                <h1>Would you like to adopt {name}?</h1>
+                <div className="buttons">
+                  <button onClick={this.adopt}>Yes</button>
+                  <button onClick={this.toggleModal}>No</button>
+                </div>
+              </div>
+            </Modal>
+          ) : null}
         </div>
       </div>
     );
