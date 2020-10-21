@@ -1,20 +1,15 @@
 import React from "react";
 import pet from "@frontendmasters/pet";
 import Carousel from "./Carousel";
+import ErrorBoundary from "./ErrorBoundary";
 
 class Details extends React.Component {
-  // constructor(props) {
-  //   super(props);
-
-  //   this.state = {
-  //     loading: true,
-  //   };
-  // }
-
-  // alternative way to using constructor
   state = { loading: true };
 
   componentDidMount() {
+    // adding an error to test Error Boundary component
+    throw new Error("lol");
+    // eslint-disable-next-line
     pet.animal(this.props.id).then(({ animal }) => {
       this.setState({
         name: animal.name,
@@ -50,4 +45,14 @@ class Details extends React.Component {
   }
 }
 
-export default Details;
+/*
+ * to use error boundary, it needs to wrap around the Details component
+ * use the spread ...props to pass all the props to the children components
+ */
+export default function DetailsWithErrorBoundary(props) {
+  return (
+    <ErrorBoundary>
+      <Details {...props} />
+    </ErrorBoundary>
+  );
+}
