@@ -45,7 +45,7 @@ export default class Carousel extends React.Component {
           {photos.map((photo, index) => (
             <img
               key={photo}
-              onClick={this.handleClick}
+              onClick={this.handleIndexClick}
               // if someone clicks on the image, pull off the index
               data-index={index}
               src={photo}
