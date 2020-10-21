@@ -26,6 +26,15 @@ export default class Carousel extends React.Component {
      */
   }
 
+  // for all event listeners use an arrow function to bind 'this' to the carousel component
+  handleIndexClick = (event) => {
+    this.setState({
+      // use + because the DOM will always return a string and we want active to be a number
+      // dataset is a DOM API, dataset.index will refer to the image data-index
+      active: +event.target.dataset.index,
+    });
+  };
+
   render() {
     const { photos, active } = this.state;
 
